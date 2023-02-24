@@ -8,7 +8,7 @@ import entities.Invoice;
 public class RentalService {
     private double pricePerHour;
     private double pricePerDay;
-    private BrazilTaxService brTaxService;
+    private TaxService taxService;
 
     public double getPricePerHour() {
         return pricePerHour;
@@ -26,12 +26,12 @@ public class RentalService {
         this.pricePerDay = pricePerDay;
     }
 
-    public BrazilTaxService getBrTaxService() {
-        return brTaxService;
+    public TaxService getTaxService() {
+        return taxService;
     }
 
-    public void setBrTaxService(BrazilTaxService brTaxService) {
-        this.brTaxService = brTaxService;
+    public void setTaxService(TaxService taxService) {
+        this.taxService = taxService;
     }
 
     public void processInvoice(CarRental carRental) {
@@ -40,14 +40,14 @@ public class RentalService {
         double duration = Math.ceil(minutes / 60);
 
         double basicPayment = duration <= 12 ? duration * pricePerHour : Math.ceil(duration / 24) * pricePerDay;
-        double tax = brTaxService.tax(basicPayment);
+        double tax = taxService.tax(basicPayment);
 
         carRental.setInvoice(new Invoice(basicPayment, tax));
     }
 
-    public RentalService(double pricePerHour, double pricePerDay, BrazilTaxService brTaxService) {
+    public RentalService(double pricePerHour, double pricePerDay, TaxService taxService) {
         this.pricePerHour = pricePerHour;
         this.pricePerDay = pricePerDay;
-        this.brTaxService = brTaxService;
+        this.taxService = taxService;
     }
 }
